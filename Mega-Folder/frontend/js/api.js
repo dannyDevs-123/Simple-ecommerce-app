@@ -1,14 +1,10 @@
-const API_URL = (() => {
-  // If the frontend is served directly from the backend, use the same origin.
-  if (window.location.protocol !== 'file:' && window.location.host.includes('5000')) {
-    return '/api';
-  }
-  // If using a local frontend dev server or file:// fallback, target backend explicitly.
-  return ' https://ecommerce-app-ujet.onrender.com';
-})();
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api'
+  : 'https://ecommerce-app-ujet.onrender.com/api';
 
 async function api(endpoint, options = {}) {
-  const url = `${API_URL}${endpoint}`;
+  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${API_BASE_URL}${normalizedEndpoint}`;
   const token = localStorage.getItem('token');
 
   const config = {
