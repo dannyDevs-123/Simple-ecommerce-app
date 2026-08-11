@@ -13,7 +13,7 @@ A simple fullStack online store where you can browse products, add them to your 
 
 ---
 
-## How to run this thing
+## How to run
 
 ### 1. Set up the backend
 
