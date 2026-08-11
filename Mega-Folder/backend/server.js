@@ -14,19 +14,20 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+app.use(cors({
+  origin: ['https://simple-ecommerce-ap.netlify.app', 'http://localhost:5000', 'http://localhost:3000', 'http://127.0.0.1:5500'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+app.options('*', cors());
+
 // Connect to database
 connectDB();
 
 // Security middleware
 app.use(helmet());
 app.use(compression());
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.FRONTEND_URL]
-  : ['http://localhost:5500', 'http://127.0.0.1:5500'];
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
 
 // Rate limiting
 const limiter = rateLimit({
