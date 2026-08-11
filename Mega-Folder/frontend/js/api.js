@@ -4,7 +4,7 @@ const API_URL = (() => {
     return '/api';
   }
   // If using a local frontend dev server or file:// fallback, target backend explicitly.
-  return 'http://localhost:5000/api';
+  return ' https://ecommerce-app-ujet.onrender.com';
 })();
 
 async function api(endpoint, options = {}) {
