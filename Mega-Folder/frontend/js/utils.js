@@ -135,13 +135,23 @@ function clearAuthStorage() {
   localStorage.removeItem('cart');
 }
 
+function getAuthToken() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token || token === 'undefined' || token === 'null') {
+      return null;
+    }
+
+    return token;
+  } catch (error) {
+    return null;
+  }
+}
+
 function getUser() {
   try {
     const rawUser = localStorage.getItem('user');
-    if (!rawUser) {
-      if (localStorage.getItem('token')) {
-        clearAuthStorage();
-      }
+    if (!rawUser || rawUser === 'undefined' || rawUser === 'null') {
       return null;
     }
 
@@ -164,12 +174,20 @@ function setUser(user) {
     return;
   }
 
-  localStorage.setItem('user', JSON.stringify(user));
-  if (user.token) {
-    localStorage.setItem('token', user.token);
+  const token = typeof user.token === 'string' && user.token.trim()
+    ? user.token.trim()
+    : getAuthToken();
+
+  const safeUser = { ...user };
+  if (token) {
+    localStorage.setItem('token', token);
+    safeUser.token = token;
   } else {
     localStorage.removeItem('token');
+    delete safeUser.token;
   }
+
+  localStorage.setItem('user', JSON.stringify(safeUser));
 }
 
 function clearUser() {
@@ -177,15 +195,7 @@ function clearUser() {
 }
 
 function isLoggedIn() {
-  const token = localStorage.getItem('token');
-  const user = getUser();
-
-  if (!token || !user) {
-    clearAuthStorage();
-    return false;
-  }
-
-  return true;
+  return !!getAuthToken();
 }
 
 function requireAuth() {

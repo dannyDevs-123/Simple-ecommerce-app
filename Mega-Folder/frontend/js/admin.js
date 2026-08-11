@@ -1,13 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await window.authBootstrapPromise;
+
+  const token = getAuthToken();
   const user = getAdminUser();
-  const token = localStorage.getItem('token');
- /*
-  if (!user || !user.isAdmin || !token) {
-    alert('Access Denied');
-    window.location.href = 'login.html';
+
+  if (!token || !user || !user.isAdmin) {
+    clearAuthStorage();
+    showToast('Admin access required', 'warning');
+    setTimeout(() => window.location.href = 'login.html', 1200);
     return;
   }
-*/
+
   const productForm = $('#productForm');
   const ordersTableBody = $('#ordersTableBody');
 
