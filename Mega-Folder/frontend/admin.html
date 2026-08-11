@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopRight - Admin Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="admin-page">
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="ShopRight home">
+        ShopRight<span class="logo-accent" aria-hidden="true">!</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Storefront</a></li>
+        <li><a href="admin.html" class="active">Admin</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="authSection">
+          <a href="login.html" class="auth-btn">Sign In</a>
+        </div>
+        <div id="userSection" style="display:none;" class="user-menu">
+          <button class="user-menu-btn" id="userMenuBtn" onclick="toggleUserMenu()">
+            <span id="navUsername">Admin</span> ▼
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="profile.html">Profile</a>
+            <a href="index.html" data-logout>Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="admin-shell">
+    <section class="admin-hero">
+      <div class="container">
+        <p class="admin-kicker">Administration</p>
+        <h1>Admin Portal</h1>
+        <p>Manage catalog updates and review incoming orders from one place.</p>
+      </div>
+    </section>
+
+    <section class="container admin-grid">
+      <article class="panel admin-panel">
+        <div class="panel-header">
+          <h2>Add New Product</h2>
+          <p>Create a new item for the storefront.</p>
+        </div>
+
+        <form id="productForm" class="admin-form">
+          <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" required placeholder="Wireless Headphones">
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" rows="5" required placeholder="Short product description..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input type="number" id="price" min="0" step="0.01" required placeholder="49.99">
+            </div>
+            <div class="form-group">
+              <label for="stock">Stock Count</label>
+              <input type="number" id="stock" min="0" step="1" required placeholder="25">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" list="categoryOptions" required placeholder="Electronics">
+            <datalist id="categoryOptions">
+              <option value="Electronics"></option>
+              <option value="Clothing"></option>
+              <option value="Books"></option>
+              <option value="Home & Garden"></option>
+              <option value="Sports"></option>
+              <option value="Toys"></option>
+              <option value="Food"></option>
+              <option value="Health"></option>
+            </datalist>
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">Image URL</label>
+            <input type="text" id="imageUrl" required placeholder="https://example.com/image.jpg">
+          </div>
+
+          <button type="submit" class="btn-primary">Add Product</button>
+        </form>
+      </article>
+
+      <article class="panel admin-panel">
+        <div class="panel-header">
+          <h2>Order Management</h2>
+          <p>Incoming orders pulled from the live backend.</p>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total Price</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr>
+                <td colspan="4" class="table-loading">Loading orders...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
