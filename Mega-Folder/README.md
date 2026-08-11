@@ -1,196 +1,114 @@
-# ShopRigh E-Commerce Application
+# Name:ShopRight
 
-A full-stack e-commerce storefront built with a Node.js + Express backend and a static HTML/CSS/JavaScript frontend. The app includes user authentication, product browsing, cart management, checkout, and order history.
+A simple fullStack online store where you can browse products, add them to your cart, and place orders. Nothing fancy, just works.
 
-## Tech Stack
+---
 
-- Frontend: HTML, CSS, Vanilla JavaScript
-- Backend: Node.js, Express.js
-- Database: MongoDB with Mongoose
-- Authentication: JWT + bcrypt
-- Security: Helmet, CORS, rate limiting, compression
+## (Tech Stack)
 
-## Project Structure
+**Frontend** – Plain HTML, CSS, and JavaScript.  
+**Backend** – Node.js with Express. Handles all the logic.  
+**Database** – MongoDB Atlas (cloud). Stores users, products, orders.  
+**Login** – JWT tokens. Keeps you logged in.
 
+---
 
-Mega-Folder/
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── .env
-│   ├── package.json
-│   ├── seed.js
-│   └── server.js
-├── frontend/
-│   ├── css/
-│   ├── js/
-│   ├── admin.html
-│   ├── cart.html
-│   ├── checkout.html
-│   ├── index.html
-│   ├── login.html
-│   ├── order-confirmation.html
-│   ├── product-details.html
-│   ├── profile.html
-│   └── register.html
-├── tests/
-│   └── category-scroll.test.js
-├── README.md
-└── package.json
-```
+## How to run this thing
 
-## Features
+### 1. Set up the backend
 
-- User registration and login
-- JWT-protected user sessions
-- Product catalog with category and search support
-- Product details pages
-- Shopping cart with add, update, and remove actions
-- Checkout flow with order creation
-- Order history and profile details
-- Admin product management routes
-- Responsive storefront design
-- Seeded sample products for testing and demos
-
-## Prerequisites
-
-Before running the app, make sure you have:
-
-- Node.js 18+
-- MongoDB database connection
-- A package manager such as npm
-- A static file server such as VS Code Live Server or `npx serve`
-
-## Backend Setup
-
-1. Open a terminal and navigate to the backend folder:
+Open your terminal and go to the backend folder:
 
 ```bash
-cd Mega-Folder/backend
+cd backend
 ```
 
-2. Install dependencies:
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Now open `.env` and add your MongoDB password and secret keys. Don't skip this.
+
+Install everything:
 
 ```bash
 npm install
 ```
 
-3. Create a `.env` file in the backend folder with the following values:
-
-```env
-PORT=5000
-NODE_ENV=development
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority
-JWT_SECRET=your_super_secret_jwt_key
-SESSION_SECRET=your_session_secret
-FRONTEND_URL=http://localhost:5500
-```
-
-4. Seed the database with sample products:
+Add some dummy products to the database:
 
 ```bash
 npm run seed
 ```
 
-5. Start the backend server:
+Start the server:
 
 ```bash
 npm start
 ```
 
-The API will run at:
+It'll run on `http://localhost:5000`.
 
+---
 
-http://localhost:5000
-```
+### 2. Set up the frontend
 
-## Frontend Setup
+The frontend is just static files. You can serve it any way you like.
 
-The frontend is a static app served directly from the `frontend` folder.
+**Easy way** – If you're using VS Code, install the Live Server extension, right-click `index.html`, and click "Open with Live Server".
 
-### Option 1: VS Code Live Server
-- Open the `frontend` folder in VS Code
-- Right-click on `index.html`
-- Choose “Open with Live Server”
-
-### Option 2: Local static server
+**Or use this**:
 
 ```bash
-cd Mega-Folder
 npx serve frontend
 ```
 
-Then open the URL shown in the terminal, usually:
+That's it. Open the URL it gives you and start poking around.
 
+---
 
-http://localhost:3000
+## What you can do
 
+- **Sign up / Log in** – Create an account or log in if you already have one
+- **Browse products** – Scroll through the catalog. Search for stuff. Filter by category.
+- **Add to cart** – Pick items, change quantities, remove things you don't want
+- **Checkout** – Enter shipping details, "pay" (it's simulated, don't worry), and place your order
+- **See order history** – All your past orders live in your profile
+- **Works on phones** – Yeah, it's responsive. Looks decent on small screens too.
+- **Loading spinners** – You'll see them when things are loading. No guessing if the app froze.
+- **Toast notifications** – Little popups that tell you what just happened (success, error, etc.)
 
-## API Overview
+---
 
-### Authentication
+## Stuff you need to set in `.env`
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register a new user |
-| POST | `/api/auth/login` | Log in an existing user |
-| GET | `/api/auth/me` | Get authenticated user info |
-| PUT | `/api/auth/profile` | Update profile details |
+Here's what your `.env` file should look like:
 
-### Products
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/products` | Get all products |
-| GET | `/api/products/:id` | Get product by ID |
-| GET | `/api/products/categories` | Get all categories |
-| GET | `/api/products/category/:category` | Get products by category |
-| GET | `/api/products/search` | Search products |
-| POST | `/api/products` | Create a product (admin) |
-| POST | `/api/products/:id/reviews` | Add a review |
-
-### Cart
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/cart` | Get cart for current user |
-| POST | `/api/cart/items` | Add an item to cart |
-| PUT | `/api/cart/items/:itemId` | Update cart item quantity |
-| DELETE | `/api/cart/items/:itemId` | Remove item from cart |
-| DELETE | `/api/cart` | Clear cart |
-
-### Orders
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/orders` | Create an order |
-| GET | `/api/orders` | Get all orders for current user |
-| GET | `/api/orders/:id` | Get one order |
-| PUT | `/api/orders/:id/status` | Update order status (admin) |
-
-### Health Check
-
-```http
-GET /api/health
+```
+PORT=5000
+MONGODB_URI=mongodb+srv://donfanky123_db_user:YOUR_PASSWORD@cluster0.q3m8kem.mongodb.net/ecommerce_db?appName=Cluster0
+JWT_SECRET=make_up_something_random_here
+SESSION_SECRET=another_random_string_here
+NODE_ENV=development
 ```
 
-Returns server health information.
-
-## Default Development Flow
-
-```cmd
-cd Mega-Folder/backend
-npm install
-cp .env.example .env   # if you have a sample env file available
-npm run seed
-npm start
-```
-
-Then start the frontend with Live Server or a local static server.
 
 
 
+## API endpoints 
 
+| What it does | Endpoint | Method |
+|--------------|----------|--------|
+| Create account | `/api/auth/register` | POST |
+| Log in | `/api/auth/login` | POST |
+| Get your info | `/api/auth/me` | GET |
+| List all products | `/api/products` | GET |
+| Get one product | `/api/products/:id` | GET |
+| View your cart | `/api/cart` | GET |
+| Add to cart | `/api/cart/items` | POST |
+| Place an order | `/api/orders` | POST |
+| See your orders | `/api/orders` | GET |
+
+---
