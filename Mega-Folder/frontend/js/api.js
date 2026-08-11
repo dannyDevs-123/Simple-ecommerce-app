@@ -5,14 +5,22 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
 async function api(endpoint, options = {}) {
   const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   const url = `${API_BASE_URL}${normalizedEndpoint}`;
-  const token = localStorage.getItem('token');
+  const token = getAuthToken?.() ?? localStorage.getItem('token');
+  const headers = {
+    ...(options.headers || {})
+  };
+
+  if (options.body && typeof options.body === 'object' && !Array.isArray(options.body) && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
 
   const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` })
-    },
-    ...options
+    ...options,
+    headers
   };
 
   if (config.body && typeof config.body === 'object') {
