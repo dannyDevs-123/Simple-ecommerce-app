@@ -3,20 +3,43 @@ let cart = { items: [], totalAmount: 0 };
 function purgeInvalidCartStorage() {
   try {
     const raw = localStorage.getItem('cart');
-    if (!raw) return;
-
-    const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.items)) {
-      localStorage.removeItem('cart');
+    
+    // Handle null or missing cart in localStorage
+    if (!raw) {
+      cart = { items: [], totalAmount: 0 };
+      // Hide any loading spinner that might be stuck
+      const overlay = $('.loading-overlay');
+      if (overlay) overlay.style.display = 'none';
       return;
     }
 
+    const parsed = JSON.parse(raw);
+    
+    // Validate parsed cart structure
+    if (!parsed || !Array.isArray(parsed.items)) {
+      localStorage.removeItem('cart');
+      cart = { items: [], totalAmount: 0 };
+      // Hide any loading spinner that might be stuck
+      const overlay = $('.loading-overlay');
+      if (overlay) overlay.style.display = 'none';
+      return;
+    }
+
+    // Filter out invalid items
     const validItems = parsed.items.filter(item => item && item.product);
     if (validItems.length !== parsed.items.length) {
       localStorage.setItem('cart', JSON.stringify({ ...parsed, items: validItems }));
     }
+    
+    // Update cart object
+    cart = { ...parsed, items: validItems };
   } catch (error) {
+    // Handle JSON parse errors or other exceptions
     localStorage.removeItem('cart');
+    cart = { items: [], totalAmount: 0 };
+    // Hide any loading spinner that might be stuck
+    const overlay = $('.loading-overlay');
+    if (overlay) overlay.style.display = 'none';
   }
 }
 
@@ -58,7 +81,11 @@ async function loadCart() {
     renderCart();
   } catch (error) {
     showToast(error.message, 'error');
+    // Ensure cart is initialized even if API call fails
+    cart = { items: [], totalAmount: 0 };
+    renderCart();
   } finally {
+    // Always hide loading spinner, even in error cases
     hideLoading();
   }
 }
@@ -221,7 +248,10 @@ async function loadCheckout() {
     }
   } catch (error) {
     showToast(error.message, 'error');
+    // Ensure cart is initialized even if API call fails
+    cart = { items: [], totalAmount: 0 };
   } finally {
+    // Always hide loading spinner, even in error cases
     hideLoading();
   }
 }
