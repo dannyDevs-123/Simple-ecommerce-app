@@ -31,7 +31,7 @@ if (Number.isInteger(trustProxy) || typeof trustProxy === 'boolean') {
 }
 
 const allowedOrigins = (process.env.CORS_ORIGINS ||
-  'https://simple-ecommerce-ap.netlify.app,http://localhost:5000,http://localhost:3000,http://127.0.0.1:5500')
+  'https://simple-ecommerce-ap.netlify.app,http://localhost:5000,http://localhost:3000,http://127.0.0.1:5500,https://ecommerce-app-ujet.onrender.com')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
